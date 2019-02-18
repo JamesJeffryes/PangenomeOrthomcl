@@ -1,21 +1,15 @@
-import unittest
 import os
-import json
 import time
-
+import unittest
+from configparser import ConfigParser
 from os import environ
-from ConfigParser import ConfigParser
-from pprint import pprint
 
 from Bio import SeqIO
-from Bio.Seq import Seq
-from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import generic_protein
 
-from biokbase.workspace.client import Workspace as workspaceService
 from PangenomeOrthomcl.PangenomeOrthomclImpl import PangenomeOrthomcl
 from PangenomeOrthomcl.PangenomeOrthomclServer import MethodContext
 from PangenomeOrthomcl.authclient import KBaseAuth as _KBaseAuth
+from installed_clients.WorkspaceClient import Workspace as workspaceService
 
 
 class PangenomeOrthomclTest(unittest.TestCase):
@@ -92,16 +86,20 @@ class PangenomeOrthomclTest(unittest.TestCase):
                 sequence = str(record.seq)
                 descr = record.description
                 if len(sequence) <= 100:
-                    features.append({"id": id, "location": [["1", 0, "+", 0]], 
-                                     "type": "CDS", "protein_translation": sequence, 
-                                     "aliases": [], "annotations":[], "function": descr})
+                    features.append({"id": id, "location": [["1", 0, "+", 0]],
+                                     "type": "CDS", "protein_translation": sequence,
+                                     "aliases": [], "annotations": [], "function": descr,
+                                     "parent_gene": "", "parent_mrna": "", "md5": "",
+                                     "protein_translation_length": len(sequence), "cdss": [],
+                                     "dna_sequence_length": 0})
             genome_obj = {"complete": 0, "contig_ids": ["1"], "contig_lengths": [10],
-                          "contigset_ref": self.getWsName() + "/" + contig_obj_name, 
+                          "contigset_ref": self.getWsName() + "/" + contig_obj_name,
                           "dna_size": 10, "domain": "Bacteria", "gc_content": 0.5,
                           "genetic_code": 11, "id": genome_file_name, "md5": "md5",
-                          "num_contigs": 1, "scientific_name": genome_file_name,
-                          "source": "test folder", "source_id": "noid", 
-                          "features": features}
+                          "num_contigs": 1, "scientific_name": genome_file_name, "cdss": [],
+                          "source": "test folder", "source_id": "noid", "molecule_type": "",
+                          "features": features, "genome_tiers": [], "feature_counts": {},
+                          "taxon_ref": "ReferenceTaxons/unknown_taxon"}
             genome_obj_name = "genome." + str(genome_index)
             info = self.getWsClient().save_objects({'workspace': self.getWsName(), 
                     'objects': [{'type': 'KBaseGenomes.Genome', 'name': genome_obj_name, 

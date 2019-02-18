@@ -1,4 +1,4 @@
-FROM kbase/kbase:sdkbase.latest
+FROM kbase/kbase:sdkbase2.latest
 MAINTAINER KBase Developer
 # -----------------------------------------
 
@@ -10,7 +10,7 @@ RUN apt-get update && \
   echo 'mysql-server mysql-server/root_password password 12345' | debconf-set-selections && \
   echo 'mysql-server mysql-server/root_password_again password 12345' | debconf-set-selections && \
   apt-get -y install mysql-server
-RUN service mysql start
+RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start
 WORKDIR /tmp
 RUN wget http://www.micans.org/mcl/src/mcl-12-068.tar.gz
 RUN tar xzf mcl-12-068.tar.gz

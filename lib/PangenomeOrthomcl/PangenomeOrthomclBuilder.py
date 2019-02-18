@@ -1,15 +1,17 @@
-import subprocess
-import MySQLdb
+import json
 import os
 import shutil
-import json
+import subprocess
 import uuid
+
+import MySQLdb
 from Bio import SeqIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import generic_protein
-from biokbase.workspace.client import Workspace as workspaceService
-from GenomeAnnotationAPI.GenomeAnnotationAPIClient import GenomeAnnotationAPI
+
+from installed_clients.GenomeAnnotationAPIClient import GenomeAnnotationAPI
+from installed_clients.WorkspaceClient import Workspace as workspaceService
+
 
 class PangenomeOrthomclBuilder:
     '''
@@ -26,7 +28,6 @@ class PangenomeOrthomclBuilder:
         self.plbin = "/kb/deployment/plbin"
         self.log = ""
         self.ws = workspaceService(self.workspaceURL, token=self.token)
-
 
     def run(self):
         self.log_line("Input parameters: " + json.dumps(self.params))
@@ -56,7 +57,6 @@ class PangenomeOrthomclBuilder:
                                                  ids_in_orths)
         self.add_single_gene_families(feature_info, orthologs, ids_in_orths, cluster_ind)
         return self.save_pangenome_and_report(genome_refs, orthologs)
-
 
     def startup_mysql(self):
         self.log_line("Starting mysql service")

@@ -20,9 +20,9 @@ class PangenomeOrthomcl:
     # state. A method could easily clobber the state set by another while
     # the latter method is running.
     ######################################### noqa
-    VERSION = "0.0.6"
-    GIT_URL = "https://github.com/kbaseapps/PangenomeOrthomcl"
-    GIT_COMMIT_HASH = "3c1358e049e76c7581484cc8fa358ae8a57b0fd7"
+    VERSION = "0.0.9"
+    GIT_URL = "git@github.com:kbaseapps/PangenomeOrthomcl.git"
+    GIT_COMMIT_HASH = "383fe0af4fa595671a1aa76708a5c6fffd215bef"
 
     #BEGIN_CLASS_HEADER
     #END_CLASS_HEADER
@@ -121,7 +121,7 @@ class PangenomeOrthomcl:
             runner = PangenomeOrthomclBuilder(self.scratch, self.workspaceURL,
                                               params, ctx["token"], ctx["provenance"])
             returnVal = runner.run()
-        except Exception, err:
+        except Exception as err:
             raise ValueError(traceback.format_exc())
         #END build_pangenome_with_orthomcl
 
